@@ -5,11 +5,8 @@
 % """
 % Ex.:
 % % from models import Site
-% % form_fields = [Site.id, Site.user, Site.site_email, Site.site_title, \
-% %   Site.site_description, Site.site_copyright, Site.page_title, Site.page_content, Site.address, Site.map_url, \
-% %   Site.phones, Site.whats_app_phones, Site.facebook_url, Site.twitter_url, Site.created_date, Site.modified_date]
-% % include("model_form.html", host=host, form_id="site_form", form_model=site, form_url="/site/update/", \
-% %   form_submit="Atualizar Dados", form_fields=form_fields)
+% % form_fields = [Site.id, Site.user, Site.site_email, Site.site_title, Site.site_description, Site.site_copyright, Site.page_title, Site.page_content, Site.address, Site.map_url, Site.phones, Site.whats_app_phones, Site.facebook_url, Site.twitter_url, Site.created_date, Site.modified_date]
+% % include("model_form.html", host=host, form_id="site_form", form_model=site, form_url="/site/update/", form_submit="Atualizar Dados", form_fields=form_fields)
 % """
 %
 % fields = form_fields if form_fields else form_model.get_fields()
