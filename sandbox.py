@@ -1,3 +1,8 @@
+"""
+opcms One Page Content Management System
+https://github.com/jfmedeirosneto/opcms
+Copyright(c) 2016 João Neto <jfmedeirosneto@yahoo.com.br>
+"""
 from bottle import route, static_file, view, app, run
 from beaker.middleware import SessionMiddleware
 
