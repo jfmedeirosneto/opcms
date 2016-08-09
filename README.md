@@ -19,7 +19,9 @@ Copyright(c) 2016 João Neto <<jfmedeirosneto@yahoo.com.br>>
 ## Run opcms
 
 Clone or download the opcms from github to a directory
+
 First install requirements.txt on Python 3.5.2 or newer
+
 Open prompt in this directory
 
 ``` bash
@@ -27,6 +29,7 @@ $ python opcms.py
 ```
 
 Open an internet browser in correspondent main page
+
 When running in local mode the page is http://localhost/
 
 To run on apache server with mod_wsgi use wsgi.py entry point
