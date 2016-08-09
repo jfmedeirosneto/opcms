@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{site.site_title}}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{{tpl_url}}css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{{tpl_url}}css/stylish-portfolio.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{{host}}/static/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- OpCMS CSS -->
+    <link href="{{host}}/static/css/featherlight.min.css" rel="stylesheet">
+    <link href="{{host}}/static/css/opcms.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
+    <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+            <li class="sidebar-brand">
+                <a href="#top">{{site.site_title}}</a>
+            </li>
+            <li>
+                <a href="#about">{{site.page_title}}</a>
+            </li>
+            <li>
+                <a href="#portfolio">Portfólios</a>
+            </li>
+            <li>
+                <a href="#contact">Contato</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <header id="top" class="header">
+        <div class="text-vertical-center">
+            <h1>{{site.site_title}}</h1>
+            <h3>{{!site.site_description}}</h3>
+            <br>
+            <a href="#about" class="btn btn-dark btn-lg">{{site.page_title}}</a>
+        </div>
+    </header>
+
+    <!-- About -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>{{site.page_title}}</h2>
+                    <p class="lead">{{!site.page_content}}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section id="portfolio" class="portfolio bg-primary">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h2>Portfólios</h2>
+                    <hr class="small">
+                    <div class="row">
+% for portfolio in site.portfolios:
+                        <div class="col-md-6">
+                            <div class="portfolio-item">
+                                <h3>{{portfolio.title}}</h3>
+                                <p>{{!portfolio.description}}</p>
+    % if portfolio.pictures.count() > 0:
+                                <a href="#" data-toggle="modal" data-target="#portfolio_modal{{portfolio.id}}">
+                                    <img class="img-portfolio img-responsive" src="{{img_url}}{{portfolio.original_image}}">
+                                </a>
+    % else:
+                                <img class="img-portfolio img-responsive" src="{{img_url}}{{portfolio.original_image}}">
+    % end
+                            </div>
+                        </div>
+% end
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h2>Contato</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-offset-2">
+                    <form id="contact-form">
+                        <input type="hidden" id="id_csrf" name="csrf" value="{{csrf}}">
+                        <input type="hidden" id="id_site" name="site_id" value="{{site.id}}">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name">Nome</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Seu Nome" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Seu Email" required="required" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subject">Assunto</label>
+                                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Assunto" required="required" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name">Mensagem</label>
+                                    <textarea id="message" name="message" class="form-control" rows="9" cols="25" required="required" placeholder="Mensagem"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-8" >
+                                <div id="contact-form-result" style="display: none;" class="alert alert-success" role="alert">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-skin pull-right" id="btnContactUs">Enviar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h4><strong>{{site.site_owner}}</strong></h4>
+                    <p>
+                        Endereço: {{!site.address}}<br>
+                        Mapa: <a href="{{site.map_url}}" target="_blank">{{site.map_url}}</a>
+                    </p>
+                    <ul class="list-unstyled">
+% for phone in site.phones.split(','):
+	% if phone:
+                        <li><i class="fa fa-phone fa-fw"></i> Telefone: {{phone}}</li>
+	% end
+% end
+% for whats_app in site.whats_app_phones.split(','):
+	% if whats_app:
+                        <li><i class="fa fa-whatsapp fa-fw"></i> WhatsApp: {{whats_app}}</li>
+	% end
+% end
+                        <li><i class="fa fa-envelope-o fa-fw"></i>  Email: <a href="mailto:{{site.site_email}}">{{site.site_email}}</a></li>
+                    </ul>
+                    <br>
+                    <ul class="list-inline">
+                        <li><a href="{{site.facebook_url}}"><i class="fa fa-facebook fa-fw fa-3x"></i></a></li>
+                        <li><a href="{{site.twitter_url}}"><i class="fa fa-twitter fa-fw fa-3x"></i></a></li>
+                    </ul>
+                    <p class="text-muted">{{site.site_copyright}}</p>
+                    <p class="text-muted">
+                        <a href="https://github.com/jfmedeirosneto/opcms" target="_blank">Site Inovado com One Page CMS &copy; | Acesse e Crie o Seu</a><br>
+                        <a href="{{tpl_module.link}}" target="_blank">Template: {{tpl_module.name}}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="{{tpl_url}}js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{tpl_url}}js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script>
+        $(document).ready(function(){
+            // Closes the sidebar menu
+            $("#menu-close").click(function(e) {
+                e.preventDefault();
+                $("#sidebar-wrapper").toggleClass("active");
+            });
+
+            // Opens the sidebar menu
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#sidebar-wrapper").toggleClass("active");
+            });
+
+            // Scrolls to the selected menu item on the page
+            $(function() {
+                $('a[href*=#]:not([href=#])').click(function() {
+                    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+                        var target = $(this.hash);
+                        target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                        if (target.length) {
+                            $('html,body').animate({
+                                scrollTop: target.offset().top
+                            }, 1000);
+                            return false;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- OpCMS JavaScript -->
+    <script type="text/javascript" src="{{host}}/static/js/featherlight.min.js"></script>
+    <script type="text/javascript" src="{{host}}/static/js/opcms.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            defaultFormSubmit(
+                "#contact-form",
+                "#contact-form-result",
+                "{{host}}/contact/",
+                function(json) { },
+                false
+            );
+        });
+    </script>
+
+<!-- Portfolio Modals -->
+% include('templates_portfolios_modal.html')
+<!-- /Portfolio Modals -->
+
+</body>
+
+</html>

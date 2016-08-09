@@ -1,0 +1,232 @@
+% import peewee
+% from utils import import_templates
+% from settings import TEMPLATES_PATH
+%
+% """
+% Ex.:
+% % from models import Site
+% % form_fields = [Site.id, Site.user, Site.site_email, Site.site_title, \
+% %   Site.site_description, Site.site_copyright, Site.page_title, Site.page_content, Site.address, Site.map_url, \
+% %   Site.phones, Site.whats_app_phones, Site.facebook_url, Site.twitter_url, Site.created_date, Site.modified_date]
+% % include("model_form.html", host=host, form_id="site_form", form_model=site, form_url="/site/update/", \
+% %   form_submit="Atualizar Dados", form_fields=form_fields)
+% """
+%
+% fields = form_fields if form_fields else form_model.get_fields()
+%
+% hidden_function = lambda f: (type(f) == peewee.PrimaryKeyField) or (type(f) == peewee.ForeignKeyField)
+% hidden_fields = [f for f in fields if hidden_function(f)]
+%
+% password_function = lambda f: (type(f) == peewee.CharField) and ("password" in f.name)
+% password_fields = [f for f in fields if password_function(f)]
+%
+% read_only_function = lambda f: (type(f) == peewee.CharField) and (("created" in f.name) or ("modified" in f.name))
+% read_only_fields = [f for f in fields if read_only_function(f)]
+%
+% other_fields_function = lambda f: (not hidden_function(f)) and (not password_function(f)) and (not read_only_function(f))
+% other_fields = [f for f in fields if other_fields_function(f)]
+%
+<div class="container">
+    <div class="row">
+        <form action="" id="id_{{form_id}}" class="form-horizontal" role="form">
+            <div class="form-group">
+                <div class="col-sm-offset-6 col-sm-4" >
+                    <div id="id_{{form_id}}_result1" style="display: none;" class="alert alert-success" role="alert">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button type="submit" id="id_{{form_id}}_submit1" class="btn btn-primary btn-sm pull-right" role="button">{{form_submit}}</button>
+                </div>
+            </div>
+        % if csrf:
+            <input type="hidden" id="id_csrf" name="csrf" value="{{csrf}}">
+        % end
+        % for f in hidden_fields:
+            % f_type = type(f)
+            % if f_type == peewee.PrimaryKeyField:
+            <input type="hidden" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" value="{{getattr(form_model, f.name)}}">
+            % elif f_type == peewee.ForeignKeyField:
+            <input type="hidden" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" value="{{getattr(form_model, f.name).id}}">
+            % end
+        % end
+        % for f in other_fields:
+            % f_type = type(f)
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="id_{{form_id}}_{{f.name}}">{{f.verbose_name}}:</label>
+                <div class="col-sm-10">
+            % if f_type == peewee.CharField:
+                % if "email" in f.name:
+                    <input type="email" class="form-control input-sm" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" placeholder="{{f.help_text}}" value="{{getattr(form_model, f.name)}}">
+                % elif "url" in f.name:
+                    <input type="url" class="form-control input-sm" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" placeholder="{{f.help_text}}" value="{{getattr(form_model, f.name)}}">
+                % elif "template" in f.name:
+                    <select class="form-control input-sm" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}">
+                    % templates_dict = import_templates(TEMPLATES_PATH)
+                    % site_template = getattr(form_model, f.name)
+                    % for template_name in templates_dict:
+                        % tpl_module = templates_dict[template_name]
+                        % if site_template == template_name:
+                        <option value="{{template_name}}" selected="selected">{{tpl_module.name}}</option>
+                        % else:
+                        <option value="{{template_name}}">{{tpl_module.name}}</option>
+                        % end
+                    % end
+                    </select><br>
+                    <p><a id="id_{{form_id}}_{{f.name}}_preview" href="" target="_blank">Previsualização Template Selecionado</a></p>
+                % else:
+                    <input type="text" class="form-control input-sm" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" placeholder="{{f.help_text}}" value="{{getattr(form_model, f.name)}}">
+                % end
+            % elif f_type == peewee.TextField:
+                % if "description" in f.name:
+                    <textarea class="form-control input-sm summernote" rows="2" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" placeholder="{{f.help_text}}">{{getattr(form_model, f.name)}}</textarea>
+                % elif "content" in f.name:
+                    <textarea class="form-control input-sm summernote" rows="10" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" placeholder="{{f.help_text}}">{{getattr(form_model, f.name)}}</textarea>
+                % else:
+                    <textarea class="form-control input-sm summernote" rows="10" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" placeholder="{{f.help_text}}">{{getattr(form_model, f.name)}}</textarea>
+                % end
+            % elif f_type == peewee.BooleanField:
+                % checked = getattr(form_model, f.name)
+                % if "active" in f.name:
+                    % if checked:
+                    <input type="checkbox" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" value="" checked="checked" disabled="disabled">
+                    % else:
+                    <input type="checkbox" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" value="" disabled="disabled">
+                    % end
+                % else:
+                    % if checked:
+                    <input type="checkbox" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" value="" checked="checked">
+                    % else:
+                    <input type="checkbox" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" value="">
+                    % end
+                % end
+            % end
+                </div>
+            </div>
+        % end
+        % for f in password_fields:
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="id_{{form_id}}_{{f.name}}1">{{f.verbose_name}}:</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control input-sm" id="id_{{form_id}}_{{f.name}}1" name="{{f.name}}1" placeholder="{{f.help_text}}" value="" autocomplete="off">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="id_{{form_id}}_{{f.name}}2">{{f.verbose_name}}:</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control input-sm" id="id_{{form_id}}_{{f.name}}2" name="{{f.name}}2" placeholder="{{f.help_text}}" value="" autocomplete="off">
+                </div>
+            </div>
+        % end
+        % for f in read_only_fields:
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="id_{{form_id}}_{{f.name}}">{{f.verbose_name}}:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control input-sm" id="id_{{form_id}}_{{f.name}}" name="{{f.name}}" placeholder="{{f.help_text}}" value="{{getattr(form_model, f.name)}}" readonly="readonly">
+                </div>
+            </div>
+        % end
+            <div class="form-group">
+                <div class="col-sm-offset-6 col-sm-4" >
+                    <div id="id_{{form_id}}_result2" style="display: none;" class="alert alert-success" role="alert">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button type="submit" id="id_{{form_id}}_submit2" class="btn btn-primary btn-sm pull-right" role="button">{{form_submit}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("input[type='password']").val("");
+    % for f in other_fields:
+        % f_type = type(f)
+        % if f_type == peewee.TextField:
+            % if "description" in f.name:
+        $("#id_{{form_id}}_{{f.name}}").summernote({
+            height: 70,
+            toolbar: [
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['view', ['codeview']],
+                ['help', ['help']]
+            ],
+        });
+            % elif "content" in f.name:
+        $("#id_{{form_id}}_{{f.name}}").summernote({
+            height: 200,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['table', ['table']],
+                ['insert', ['link', 'hr']],
+                ['view', ['fullscreen', 'codeview']],
+                ['help', ['help']]
+            ],
+        });
+            % elif "address" in f.name:
+        $("#id_{{form_id}}_{{f.name}}").summernote({
+            height: 70,
+            toolbar: [
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['view', ['codeview']],
+                ['help', ['help']]
+            ],
+        });
+            % else:
+        $("#id_{{form_id}}_{{f.name}}").summernote({
+            height: 200,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['table', ['table']],
+                ['insert', ['link', 'hr']],
+                ['view', ['fullscreen', 'codeview']],
+                ['help', ['help']]
+            ],
+        });
+            % end
+        % elif f_type == peewee.CharField:
+            % if "template" in f.name:
+        $("#id_{{form_id}}_{{f.name}}_preview").bind( "click", function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            var template_name = $("#id_{{form_id}}_{{f.name}}").val();
+            var preview_url = "{{host}}?preview=" + template_name;
+            window.open(preview_url, "_blank");
+            return false;
+        });
+            % end
+        % end
+    % end
+    % for f in other_fields:
+        $("#id_{{form_id}}_{{f.name}}").tooltip({"trigger": "focus", "title": "{{f.help_text}}"});
+    % end
+    % for f in password_fields:
+        $("#id_{{form_id}}_{{f.name}}1").tooltip({"trigger": "focus", "title": "{{f.help_text}}"});
+        $("#id_{{form_id}}_{{f.name}}2").tooltip({"trigger": "focus", "title": "{{f.help_text}}"});
+    % end
+    % for f in read_only_fields:
+        $("#id_{{form_id}}_{{f.name}}").tooltip({"trigger": "focus", "title": "{{f.help_text}}"});
+    % end
+        defaultFormSubmit(
+            "#id_{{form_id}}",
+            "#id_{{form_id}}_result1, #id_{{form_id}}_result2",
+            "{{host}}{{form_url}}",
+            function(json) {},
+            false
+        );
+    });
+</script>

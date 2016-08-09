@@ -1,0 +1,186 @@
+% rebase('base_admin.html', host=host, site=site, model_name='Portfólios')
+<div class="container">
+    <div class="row">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <div class="navbar-brand">Ações :</div>
+                </div>
+                <div>
+                    <a id="id_add_portfolio" href="" type="button" class="btn btn-default navbar-btn pull-left">Adicionar Novo Portfólio</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row" id="id_portfolio_list">
+% include('portfolios_admin_list.html')
+    </div>
+</div>
+<div class="modal fade" id="id_modal_add_portfolio">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="id_add_portfolio_form_close" class="close" data-dismiss="modal">x</button>
+                <h3>Adicionar Novo Portfólio</h3>
+            </div>
+            <div class="modal-body">
+                <form action="" id="id_add_portfolio_form" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="id_add_portfolio_upload">Imagem de Capa</label>
+                        <div class="col-sm-8">
+                            <input type="file" id="id_add_portfolio_upload" name="upload" placeholder="Imagem" required="required" autocomplete="off"/>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label col-sm-4" for="id_add_portfolio_show_img">Miniatura Imagem de Capa:</label>
+                        <div class="col-sm-6">
+                            <div id="id_add_portfolio_show_img" style="display: none;"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="id_add_portfolio_title">Título:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control input-sm" id="id_add_portfolio_title" name="title" placeholder="Coloque o título do portfolio" value="Título do Portfólio" required="required" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="id_add_portfolio_description">Descrição:</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control input-sm summernote" rows="2" id="id_add_portfolio_description" name="description" placeholder="Coloque a descrição do portfolio" autocomplete="off"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-8" >
+                            <div id="id_add_portfolio_form_result" style="display: none;" class="alert alert-success" role="alert">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="submit" id="id_add_portfolio_form_submit" class="btn btn-primary btn-sm pull-right" role="button">Adicionar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="id_modal_edit_portfolio">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="id_edit_portfolio_form_close" class="close" data-dismiss="modal">x</button>
+                <h3>Editar Portfólio</h3>
+            </div>
+            <div class="modal-body">
+                <form action="" id="id_edit_portfolio_form" class="form-horizontal" role="form">
+                    <input type="hidden" id="id_edit_portfolio_id" name="portfolio" value="-1">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="id_edit_portfolio_upload">Imagem de Capa</label>
+                        <div class="col-sm-8">
+                            <input type="file" id="id_edit_portfolio_upload" name="upload" placeholder="Imagem" autocomplete="off"/>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label col-sm-4" for="id_edit_portfolio_show_img">Miniatura Imagem de Capa:</label>
+                        <div class="col-sm-6">
+                            <div id="id_edit_portfolio_show_img" style="display: none;"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="id_edit_portfolio_title">Título:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control input-sm" id="id_edit_portfolio_title" name="title" placeholder="Coloque o título do portfolio" value="Título do Portfólio" required="required" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="id_edit_portfolio_description">Descrição:</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control input-sm summernote" rows="2" id="id_edit_portfolio_description" name="description" placeholder="Coloque a descrição do portfolio" autocomplete="off"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-8" >
+                            <div id="id_edit_portfolio_form_result" style="display: none;" class="alert alert-success" role="alert">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="submit" id="id_edit_portfolio_form_submit" class="btn btn-primary btn-sm pull-right" role="button">Atualizar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#id_add_portfolio_upload, #id_edit_portfolio_upload").tooltip({"trigger": "focus", "title": "Entre com uma imagem de capa para o portfolio"});
+        $("#id_add_portfolio_title, #id_edit_portfolio_title").tooltip({"trigger": "focus", "title": "Entre com o título do portfolio"});
+        $("#id_add_portfolio_description, #id_edit_portfolio_description").tooltip({"trigger": "focus", "title": "Entre com a descrição do portfolio"});
+        $("#id_add_portfolio_description, #id_edit_portfolio_description").summernote({
+            height: 70,
+            toolbar: [
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['view', ['codeview']],
+                ['help', ['help']]
+            ],
+        });
+        $("#id_add_portfolio").bind( "click", function(event) {
+            event.stopPropagation();
+            event.preventDefault();		
+            $("#id_add_portfolio_upload").val("");
+            $("#id_add_portfolio_title").val("");
+            $("#id_add_portfolio_description").code("");
+            $("#id_add_portfolio_show_img").html("").hide();
+            $("#id_modal_add_portfolio").modal("show");
+            return false;
+        });
+        var formAddData = function() {
+            return {
+                "site" : "{{site.get_id()}}",
+                "user" : "{{site.user.get_id()}}",
+                "title" : $("#id_add_portfolio_title").val(),
+                "description" : $("#id_add_portfolio_description").val(),
+                "csrf" : "{{csrf}}",
+            };
+        };
+        defaultUploadFilesSubmit(
+            "#id_add_portfolio_form",
+            formAddData,
+            "#id_add_portfolio_form_result",
+            "#id_add_portfolio_show_img",
+            "{{host}}/portfolio/add/",
+            function(json) {
+                if (json.status) {
+                    $("#id_portfolio_list").html(json.portfolio_list);
+                    setTimeout( function() { $("#id_modal_add_portfolio").modal('hide'); }, 1500 );
+                }
+            },
+            false
+        );
+        var formEditData = function() {
+            return {
+                "site" : "{{site.get_id()}}",
+                "user" : "{{site.user.get_id()}}",
+                "portfolio" : $("#id_edit_portfolio_id").val(),
+                "title" : $("#id_edit_portfolio_title").val(),
+                "description" : $("#id_edit_portfolio_description").val(),
+                "csrf" : "{{csrf}}",
+            };
+        };
+        defaultUploadFilesSubmit(
+            "#id_edit_portfolio_form",
+            formEditData,
+            "#id_edit_portfolio_form_result",
+            "#id_edit_portfolio_show_img",
+            "{{host}}/portfolio/update/",
+            function(json) {
+                if (json.status) {
+                    $("#id_portfolio_list").html(json.portfolio_list);
+                }
+            },
+            false
+        );
+    });
+</script>

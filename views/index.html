@@ -1,0 +1,64 @@
+% rebase('base.html', host=host, site=site)
+<style type="text/css">
+    html,body {
+    height:100%;
+    }
+
+    h1 {
+    font-family: Arial,sans-serif
+    font-size:80px;
+    color:#DDCCEE;
+    }
+
+    .lead {
+    color:#DDCCEE;
+    }
+
+
+    /* Custom container */
+    .container-full {
+    margin: 0 auto;
+    width: 100%;
+    background-color:#110022;
+    color:#eee;
+    overflow:hidden;
+    }
+
+    .container-full a {
+    color:#efefef;
+    text-decoration:none;
+    }
+
+    .v-center {
+    margin-top:5%;
+    }
+</style>
+<div class="container-full">
+    <div class="row">
+        <div class="col-lg-12 text-center v-center">
+            <h1>{{site.site_title}}</h1>
+            <p class="lead">{{!site.site_description}}</p>
+            <br><br><br>
+        </div>
+    </div><!-- /row -->
+</div> <!-- /container full -->
+<div class="container">
+    <hr>
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>{{site.page_title}}</h3></div>
+                <div class="panel-body">{{!site.page_content}}</div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <p>
+                <a href="https://github.com/jfmedeirosneto/opcms" target="_blank">Site Inovado com One Page CMS &copy; | Acesse e Crie o Seu</a><br>
+                <a href="http://www.bootstrapzero.com/bootstrap-template/landing-page" target="_blank">Template: Landing Page Bootstrap Template</a>
+            </p>
+        </div>
+    </div>
+</div>

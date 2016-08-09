@@ -1,0 +1,74 @@
+/*!
+ * OpCMS CSS
+ */
+
+.opcms-portfolio-modal {
+    z-index: 1042;
+}
+.opcms-portfolio-modal .modal-content {
+    padding: 100px 0;
+    min-height: 100%;
+    border: 0;
+    border-radius: 0;
+    text-align: center;
+    background-clip: border-box;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.opcms-portfolio-modal .close-modal {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 75px;
+    height: 75px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.opcms-portfolio-modal .close-modal:hover {
+    opacity: .3;
+}
+
+.opcms-portfolio-modal .close-modal .lr {
+    z-index: 1051;
+    width: 1px;
+    height: 75px;
+    margin-left: 35px;
+    background-color: #222;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.opcms-portfolio-modal .close-modal .lr .rl {
+    z-index: 1052;
+    width: 1px;
+    height: 75px;
+    background-color: #222;
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.opcms-thumbnail h4 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: black;
+}
+
+.opcms-thumbnail p {
+    color: black;
+}
+
+.opcms-featherlight {
+    z-index: 1043;
+}
+
+.opcms-featherlight .featherlight-content {
+    overflow: hidden;
+}
+
+.opcms-featherlight .featherlight-image {
+    cursor: pointer;
+}

@@ -1,0 +1,74 @@
+% import time
+% timestamp = time.time()
+<div id="id_picture_actions_result" style="display: none;" class="alert alert-success" role="alert"></div>
+<ul class="media-list list-group">
+% for index,picture in enumerate(portfolio.pictures):
+  <li class="media list-group-item">
+    <div class="media-left">
+        <img class="media-object" src="{{img_url}}{{picture.thumbnail_image}}?timestamp={{timestamp}}" alt="{{picture.title}}" title="{{picture.title}}">
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading">{{index+1}} - {{picture.title}}</h4>
+        <p>
+            <span>
+                <a id="id_edit_picture_button{{picture.get_id()}}"
+                   href="{{host}}/picture/get/{{site.get_id()}}/{{site.user.get_id()}}/{{portfolio.get_id()}}/{{picture.get_id()}}/"
+                   title="Editar Imagem"
+                   class="btn btn-xs btn-primary" role="button">
+                    <span class="glyphicon glyphicon-pencil"></span>&nbsp&nbspEditar&nbsp&nbsp
+                </a>
+            </span>
+            <span style="padding-left: 15px;">
+                <a id="id_delete_picture_button{{picture.get_id()}}"
+                   href="?site={{site.get_id()}}&user={{site.user.get_id()}}&portfolio={{portfolio.get_id()}}&picture={{picture.get_id()}}&csrf={{csrf}}"
+                   title="Apagar Imagem"
+                   class="btn btn-xs btn-warning" role="button">
+                    <span class="glyphicon glyphicon-trash"></span>&nbsp&nbspApagar&nbsp&nbsp
+                </a>
+            </span>
+        </p>
+% # Use ! to disable escaping
+        {{!picture.description}}
+    </div>
+  </li>
+% end
+</ul>
+<script type="text/javascript">
+	$(document).ready(function(){
+	    var results = $("#id_picture_actions_result");
+        $("a[id^='id_edit_picture_button']").bind( "click", function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            results.html("").hide();
+            defaultAjax($(this).attr("href"), {}, "GET", function(json) {
+                if (json.status) {
+                    $("#id_edit_picture_upload").val("");
+                    $("#id_edit_picture_id").val(json.id);
+                    $("#id_edit_picture_title").val(json.title);
+                    $("#id_edit_picture_description").code(json.description);
+                    $("#id_edit_picture_show_img").show().html(
+                        "<img src='" + json.thumbnail + "?timestamp=" + new Date().getTime() + "' class='img-thumbnail center-block' width='200' height='200'/>"
+                    );
+                    $("#id_modal_edit_picture").modal("show");
+                } else {
+                    results.removeClass("alert-success alert-danger").addClass("alert-danger").html(json.info).show();
+                    setTimeout( function() { results.fadeOut(1500); }, 1500 );
+                }
+            }, false);
+            return false;
+        });
+        defaultClickSubmit(
+            "a[id^='id_delete_picture_button']",
+            "#id_picture_actions_result",
+            "{{host}}/picture/delete/",
+            function(json) {
+                if (json.status) {
+                    $("#id_picture_list").html(json.picture_list);
+                }
+            },
+            false,
+            true,
+            "Apagar Imagem"
+        );
+	});
+</script>

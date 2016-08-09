@@ -1,0 +1,4 @@
+Beaker==1.8.0
+bottle==0.12.9
+peewee==2.8.1
+Pillow==3.3.0

@@ -1,0 +1,79 @@
+% import time
+% timestamp = time.time()
+<div id="id_portfolio_actions_result" style="display: none;" class="alert alert-success" role="alert"></div>
+<ul class="media-list list-group">
+% for index,portfolio in enumerate(site.portfolios):
+  <li class="media list-group-item">
+    <div class="media-left">
+        <img class="media-object" src="{{img_url}}{{portfolio.thumbnail_image}}?timestamp={{timestamp}}" alt="{{portfolio.title}}" title="{{portfolio.title}}">
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading">{{index+1}} - {{portfolio.title}}</h4>
+        <h5 class="media-heading">{{!portfolio.description}}</h5>
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group" role="group">
+                <a id="id_edit_portfolio_button{{portfolio.get_id()}}"
+                   href="{{host}}/portfolio/get/{{site.get_id()}}/{{site.user.get_id()}}/{{portfolio.get_id()}}/"
+                   title="Editar Portfólio"
+                   class="btn btn-sm btn-default btn-primary" role="button">
+                    <span class="glyphicon glyphicon-pencil"></span>&nbsp&nbspEditar&nbsp&nbsp
+                </a>
+                <a id="id_gallery_portfolio_button{{portfolio.get_id()}}"
+                   href="{{host}}/pictures/admin/{{site.get_id()}}/{{site.user.get_id()}}/{{portfolio.get_id()}}/"
+                   title="Editar Galeria de Fotos"
+                   class="btn btn-sm btn-default btn-primary" role="button">
+                    <span class="glyphicon glyphicon-camera"></span>&nbsp&nbspGaleria&nbsp&nbsp
+                </a>
+            </div>
+            <div class="btn-group" role="group">
+                <a id="id_delete_portfolio_button{{portfolio.get_id()}}"
+                   href="?site={{site.get_id()}}&user={{site.user.get_id()}}&portfolio={{portfolio.get_id()}}&csrf={{csrf}}"
+                   title="Apagar Portfólio"
+                   class="btn btn-sm btn-default btn-warning" role="button">
+                    <span class="glyphicon glyphicon-trash"></span>&nbsp&nbspApagar&nbsp&nbsp
+                </a>
+            </div>
+        </div>
+    </div>
+  </li>
+% end
+</ul>
+<script type="text/javascript">
+	$(document).ready(function(){
+	    var results = $("#id_portfolio_actions_result");
+        $("a[id^='id_edit_portfolio_button']").bind( "click", function(event) {
+            event.stopPropagation();
+            event.preventDefault();		
+            results.html("").hide();
+            defaultAjax($(this).attr("href"), {}, "GET", function(json) {
+                if (json.status) {
+                    $("#id_edit_portfolio_upload").val("");
+                    $("#id_edit_portfolio_id").val(json.id);
+                    $("#id_edit_portfolio_title").val(json.title);
+                    $("#id_edit_portfolio_description").code(json.description);
+                    $("#id_edit_portfolio_show_img").show().html(
+                        "<img src='" + json.thumbnail + "?timestamp=" + new Date().getTime() + "' class='img-thumbnail center-block' width='200' height='200'/>"
+                    );
+                    $("#id_modal_edit_portfolio").modal("show");
+                } else {
+                    results.removeClass("alert-success alert-danger").addClass("alert-danger").html(json.info).show();
+                    setTimeout( function() { results.fadeOut(1500); }, 1500 );
+                }
+            }, false);
+            return false;
+        });
+        defaultClickSubmit(
+            "a[id^='id_delete_portfolio_button']",
+            "#id_portfolio_actions_result",
+            "{{host}}/portfolio/delete/",
+            function(json) {
+                if (json.status) {
+                    $("#id_portfolio_list").html(json.portfolio_list);
+                }
+            },
+            false,
+            true,
+            "Apagar Portfólio"
+        );
+	});
+</script>

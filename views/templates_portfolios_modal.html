@@ -1,0 +1,60 @@
+% for portfolio in site.portfolios:
+    % if portfolio.pictures.count() > 0:
+    <!-- Portfolio Modal {{portfolio.id}} -->
+    <div class="opcms-portfolio-modal modal fade" id="portfolio_modal{{portfolio.id}}" tabindex="-1" role="dialog"
+         aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-xs-12">
+                        <h2>{{portfolio.title}}</h2>
+                    </div>
+        % for picture in portfolio.pictures:
+                    <div class="col-lg-3 col-md-4 col-xs-6">
+                        <div class="thumbnail opcms-thumbnail">
+                            <a href="#"
+                               data-featherlight="{{img_url}}{{picture.original_image}}"
+                               data-featherlight-variant="opcms-featherlight"
+                               data-featherlight-close-on-click="anywhere"
+                               data-featherlight-close-on-esc="false"
+                               data-featherlight-close-icon="">
+                                <img id="img2_modal{{portfolio.id}}{{picture.id}}" src="{{host}}/static/img/loader.gif" alt="{{picture.title}}">
+                            </a>
+                            <h4>{{picture.title}}</h4>
+                            <p>{{!picture.description}}</p>
+                        </div>
+                    </div>
+        % end
+                    <div class="col-lg-12 col-md-12 col-xs-12">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Fechar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    % end
+% end
+    <script type="text/javascript">
+        $(document).ready(function(){
+% for portfolio in site.portfolios:
+    % if portfolio.pictures.count() > 0:
+        $("#portfolio_modal{{portfolio.id}}").on("show.bs.modal", function () {
+        % for picture in portfolio.pictures:
+            // Lazy load {{img_url}}{{picture.normalized_image}}
+            $("#img2_modal{{portfolio.id}}{{picture.id}}")
+                .attr("src", "{{img_url}}{{picture.normalized_image}}")
+                .error(function(){ $(this).attr("src", "{{host}}/static/img/loader.gif"); });
+        % end
+        });
+    % end
+% end
+        });
+    </script>
