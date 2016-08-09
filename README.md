@@ -45,7 +45,7 @@ When running in local mode the Admin page is http://localhost/admin
 
 ### Main Page
 
-![Home](https://raw.githubusercontent.com/jfmedeirosneto/opcms/master/screenshot/main-page.png "Main Page")
+![Home](https://raw.githubusercontent.com/jfmedeirosneto/opcms/master/screenshots/main-page.png "Main Page")
 
 ## Credits
 
